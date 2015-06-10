@@ -56,9 +56,3 @@ ValueTransformer* ValueTransformer::parseFromXml(QDomElement transformElement,
 
     return pTransformer;
 }
-
-ValueTransformer::~ValueTransformer() {
-    foreach (TransformNode* node, m_transformers) {
-        delete node;
-    }
-}
