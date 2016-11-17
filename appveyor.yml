@@ -89,3 +89,51 @@ clone_folder: c:\projects\mixxx
   # this is how to set encrypted variable. Go to "Encrypt data" page in account menu to encrypt data.
 #  my_secure_var1:
 #    secure: FW3tJ3fMncxvs58/ifSP7w==
+# environment:
+#  global:
+#    connection_string: server=12;password=13;
+#    service_url: https://127.0.0.1:8090
+#
+#  matrix:
+#  - db: mysql
+#    provider: mysql
+#
+#  - db: mssql
+#    provider: mssql
+#    password:
+#      secure: $#(JFDA)jQ@#$
+
+# this is how to allow failing jobs in the matrix
+#matrix:
+#  fast_finish: true     # set this flag to immediately finish build once one of the jobs fails.
+#  allow_failures:
+#    - platform: x86
+#      configuration: Debug
+#    - platform: x64
+#      configuration: Release
+
+# build cache to preserve files/folders between builds
+#cache:
+#  - packages -> **\packages.config  # preserve "packages" directory in the root of build folder but will reset it if packages.config is modified
+#  - projectA\libs
+#  - node_modules                    # local npm modules
+#  - '%LocalAppData%\NuGet\Cache'
+
+# enable service required for build/tests
+#services:
+#  - mssql2014           # start SQL Server 2014 Express
+#  - mssql2014rs         # start SQL Server 2014 Express and Reporting Services
+#  - mssql2012sp1        # start SQL Server 2012 SP1 Express
+#  - mssql2012sp1rs      # start SQL Server 2012 SP1 Express and Reporting Services
+#  - mssql2008r2sp2      # start SQL Server 2008 R2 SP2 Express
+#  - mssql2008r2sp2rs    # start SQL Server 2008 R2 SP2 Express and Reporting Services
+#  - mysql               # start MySQL 5.6 service
+#  - postgresql          # start PostgreSQL 9.5 service
+#  - iis                 # start IIS
+#  - msmq                # start Queuing services
+#  - mongodb             # start MongoDB
+
+install:
+    # Download and install scons
+  - ps: (new-object net.webclient).DownloadFile('http://www.blaisot.org/mixxx-buildserver-windows/scons-2.5.1.zip', 'scons-2.5.1.zip')
+  - ps: 7z x scons-2.5.1.zip
