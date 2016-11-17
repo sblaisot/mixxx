@@ -135,5 +135,5 @@ clone_folder: c:\projects\mixxx
 
 install:
     # Download and install scons
-  - ps: (new-object net.webclient).DownloadFile('http://www.blaisot.org/mixxx-buildserver-windows/scons-2.5.1.zip', 'scons-2.5.1.zip')
-  - ps: 7z x scons-2.5.1.zip
+  - curl -fsS -o installer.msi https://www.blaisot.org/mixxx-buildserver-windows/scons-2.5.1.zip
+  - 7z x scons-2.5.1.zip
