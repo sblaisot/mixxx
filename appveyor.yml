@@ -135,5 +135,5 @@ clone_folder: c:\projects\mixxx
 
 install:
     # Download and install scons
-  - curl -fsS -o installer.msi https://www.blaisot.org/mixxx-buildserver-windows/scons-2.5.1.zip
+  - curl -fsS -o scons-2.5.1.zip https://www.blaisot.org/mixxx-buildserver-windows/scons-2.5.1.zip
   - 7z x scons-2.5.1.zip
