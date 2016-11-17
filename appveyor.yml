@@ -134,11 +134,18 @@ clone_folder: c:\projects\mixxx
 #  - mongodb             # start MongoDB
 
 install:
-    # Download and install scons
+  - echo *** Downloading and installing scons
   - curl -fsS -o scons-2.5.1.zip https://www.blaisot.org/mixxx-buildserver-windows/scons-2.5.1.zip
   - 7z x scons-2.5.1.zip
   - cd scons-2.5.1
   - python setup.py install
+  - echo *** Downloading precompiled build environment
+  - cd \
+  - mkdir mixxx-buildserver
+  - cd mixxx-buildserver
+  - curl -fsS -o build_mixxx.bat https://www.blaisot.org/mixxx-buildserver-windows/build_mixxx.bat
+  - curl -fsS -o 2.0-x64-release.zip https://www.blaisot.org/mixxx-buildserver-windows/2.0-x64-release.zip
+  - 7z x 2.0-x64-release.zip
 
 #---------------------------------#
 #       build configuration       #
@@ -158,7 +165,8 @@ platform: Any CPU
 
 # to run your custom scripts instead of automatic MSBuild
 build_script:
-    - scons
+    - cd C:\projects\mixxx
+    - C:\mixxx-buildserver\build_mixxx.bat
 
 # to disable automatic builds
 #build: off
