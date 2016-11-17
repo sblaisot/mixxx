@@ -114,7 +114,9 @@ clone_folder: c:\projects\mixxx
 #      configuration: Release
 
 # build cache to preserve files/folders between builds
-#cache:
+cache:
+  # avoid re-downloading our buildserver each time (it's 1.4GB compressed)
+  - C:\mixxx-buildserver
 #  - packages -> **\packages.config  # preserve "packages" directory in the root of build folder but will reset it if packages.config is modified
 #  - projectA\libs
 #  - node_modules                    # local npm modules
@@ -135,18 +137,15 @@ clone_folder: c:\projects\mixxx
 #  - mongodb             # start MongoDB
 
 install:
+  - cd %TEMP%
   - echo *** Downloading and installing scons
   - curl -fsS -o scons-2.5.1.zip https://www.blaisot.org/mixxx-buildserver-windows/scons-2.5.1.zip
   - 7z x scons-2.5.1.zip
   - cd scons-2.5.1
   - python setup.py install
   - echo *** Downloading precompiled build environment
-  - cd \
-  - mkdir mixxx-buildserver
-  - cd mixxx-buildserver
-  - curl -fsS -o build_mixxx.bat https://www.blaisot.org/mixxx-buildserver-windows/build_mixxx.bat
-  - curl -fsS -o 2.0-x64-release.zip https://www.blaisot.org/mixxx-buildserver-windows/2.0-x64-release.zip
-  - 7z x 2.0-x64-release.zip
+  - curl -fsS -o install_buildenv.bat https://www.blaisot.org/mixxx-buildserver-windows/install_buildenv.bat
+  - .\install_buildenv.bat
 
 #---------------------------------#
 #       build configuration       #
@@ -167,7 +166,7 @@ platform: Any CPU
 # to run your custom scripts instead of automatic MSBuild
 build_script:
     - cd C:\projects\mixxx
-    - C:\mixxx-buildserver\build_mixxx.bat
+    - C:\mixxx-buildserver\build_mixxx.bat x64 release
 
 # to disable automatic builds
 #build: off
