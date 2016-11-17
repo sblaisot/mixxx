@@ -30,6 +30,7 @@ bug list][easybugs] and get started!
 ## Compiling
 
 [![Build Status](https://travis-ci.org/mixxxdj/mixxx.svg)](https://travis-ci.org/mixxxdj/mixxx)
+[![Build status](https://ci.appveyor.com/api/projects/status/9yg24r7jallfi0gc/branch/appveyor-test?svg=true)](https://ci.appveyor.com/project/sblaisot/mixxx/branch/appveyor-test)
 
 First, you must install all of Mixxx's dependencies. To compile Mixxx using
 [SCons], run:
