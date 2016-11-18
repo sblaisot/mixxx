@@ -202,7 +202,9 @@ build_script:
 
 # to run your custom scripts instead of automatic tests
 test_script:
-  - echo Need to call tests here
+  - echo *** Testing
+  - cd dist64
+  - .\mixxx-test.exe
 
 # to disable automatic tests
 #test: off
