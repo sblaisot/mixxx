@@ -226,8 +226,8 @@ artifacts:
 #  - path: logs
 
   # pushing all *.nupkg files in build directory recursively
-  - path: '*\*.exe'
-  - path: '*\*.msi'
+  - path: '*.exe'
+  - path: '*.msi'
 
 #---------------------------------#
 #        global handlers          #
