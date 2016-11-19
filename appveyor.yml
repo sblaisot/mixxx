@@ -146,7 +146,7 @@ install:
   - cd scons-2.5.1
   - python setup.py install
   - echo *** Downloading precompiled build environment if not in build-cache
-  - curl -fsS -o install_buildenv.bat https://www.blaisot.org/mixxx-buildserver-windows/install_buildenv.bat
+  - curl -fsS -L -o install_buildenv.bat https://www.blaisot.org/mixxx-buildserver-windows/install_buildenv.bat
   - .\install_buildenv.bat
 
 #---------------------------------#
