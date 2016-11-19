@@ -140,7 +140,8 @@ cache:
 install:
   - cd %TEMP%
   - echo *** Downloading and installing scons
-  - curl -fsS -L -o scons-2.5.1.zip http://prdownloads.sourceforge.net/scons/scons-2.5.1.zip
+#  - curl -fsS -L -o scons-2.5.1.zip http://prdownloads.sourceforge.net/scons/scons-2.5.1.zip
+  - curl -fsS -L -o scons-2.5.1.zip https://www.blaisot.org/mixxx-buildserver-windows/scons-2.5.1.zip
   - 7z x scons-2.5.1.zip
   - cd scons-2.5.1
   - python setup.py install
