@@ -1,0 +1,251 @@
+---
+# Notes:
+#   - Minimal appveyor.yml file is an empty file. All sections are optional.
+#   - Indent each level of configuration with 2 spaces. Do not use tabs!
+#   - All section names are case-sensitive.
+#   - Section names should be unique on each level.
+
+#---------------------------------#
+#      general configuration      #
+#---------------------------------#
+
+# version format
+version: '{branch}-{build}'
+
+# branches to build
+branches:
+  # whitelist
+  only:
+    - appveyor-test
+    #- master
+
+# blacklist
+#except:
+#  - gh-pages
+
+# Do not build on tags (GitHub and BitBucket)
+skip_tags: true
+
+# Start builds on tags only (GitHub and BitBucket)
+#skip_non_tags: true
+
+# Skipping commits with particular message or from specific user
+#skip_commits:
+#  message: /Created.*\.(png|jpg|jpeg|bmp|gif)/      # Regex for matching commit message
+#  author: John                                      # Commit author's username, name, email or regexp maching one of these.
+
+# Including commits with particular message or from specific user
+#only_commits:
+#  message: /build/                # Start a new build if message contains 'build'
+#  author: jack@company.com        # Start a new build for commit of user with email jack@company.com
+
+# Skipping commits affecting specific files (GitHub only). More details here: /docs/appveyor-yml
+#skip_commits:
+#  files:
+#    - docs/*
+#    - '**/*.html'
+
+# Including commits affecting specific files (GitHub only). More details here: /docs/appveyor-yml
+#only_commits:
+#  files:
+#    - Project-A/
+#    - Project-B/
+
+# Do not build feature branch with open Pull Requests
+#skip_branch_with_pr: true
+
+# Maximum number of concurrent jobs for the project
+max_jobs: 1
+
+#---------------------------------#
+#    environment configuration    #
+#---------------------------------#
+
+# Build worker image (VM template)
+image: Visual Studio 2013
+
+# scripts that are called at very beginning, before repo cloning
+init:
+  - git config --global core.autocrlf input
+# Uncomment the following line to show RDP info at beginning of job
+#  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+
+# clone directory
+clone_folder: c:\projects\mixxx
+
+# fetch repository as zip archive
+# shallow_clone: true                 # default is "false"
+
+# set clone depth
+#clone_depth: 5                      # clone entire repository history if not defined
+
+# setting up etc\hosts file
+#hosts:
+#  queue-server: 127.0.0.1
+#  db.server.com: 127.0.0.2
+
+# environment variables
+#environment:
+#  my_var1: value1
+#  my_var2: value2
+  # this is how to set encrypted variable. Go to "Encrypt data" page in account menu to encrypt data.
+#  my_secure_var1:
+#    secure: FW3tJ3fMncxvs58/ifSP7w==
+# environment:
+#  global:
+#    connection_string: server=12;password=13;
+#    service_url: https://127.0.0.1:8090
+#
+#  matrix:
+#  - db: mysql
+#    provider: mysql
+#
+#  - db: mssql
+#    provider: mssql
+#    password:
+#      secure: $#(JFDA)jQ@#$
+
+# this is how to allow failing jobs in the matrix
+#matrix:
+#  fast_finish: true     # set this flag to immediately finish build once one of the jobs fails.
+#  allow_failures:
+#    - platform: x86
+#      configuration: Debug
+#    - platform: x64
+#      configuration: Release
+
+# build cache to preserve files/folders between builds
+cache:
+  # avoid re-downloading our buildserver each time (it's 1.4GB compressed)
+  - C:\mixxx-buildserver
+#  - packages -> **\packages.config  # preserve "packages" directory in the root of build folder but will reset it if packages.config is modified
+#  - projectA\libs
+#  - node_modules                    # local npm modules
+#  - '%LocalAppData%\NuGet\Cache'
+
+# enable service required for build/tests
+#services:
+#  - mssql2014           # start SQL Server 2014 Express
+#  - mssql2014rs         # start SQL Server 2014 Express and Reporting Services
+#  - mssql2012sp1        # start SQL Server 2012 SP1 Express
+#  - mssql2012sp1rs      # start SQL Server 2012 SP1 Express and Reporting Services
+#  - mssql2008r2sp2      # start SQL Server 2008 R2 SP2 Express
+#  - mssql2008r2sp2rs    # start SQL Server 2008 R2 SP2 Express and Reporting Services
+#  - mysql               # start MySQL 5.6 service
+#  - postgresql          # start PostgreSQL 9.5 service
+#  - iis                 # start IIS
+#  - msmq                # start Queuing services
+#  - mongodb             # start MongoDB
+
+install:
+  - cd %TEMP%
+  - echo *** Downloading and installing scons
+#  - curl -fsS -L -o scons-2.5.1.zip http://prdownloads.sourceforge.net/scons/scons-2.5.1.zip
+  - curl -fsS -L -o scons-2.5.1.zip https://www.blaisot.org/mixxx-buildserver-windows/scons-2.5.1.zip
+  - 7z x scons-2.5.1.zip
+  - cd scons-2.5.1
+  - python setup.py install
+  - echo *** Downloading precompiled build environment if not in build-cache
+  - curl -fsS -L -o install_buildenv.bat https://www.blaisot.org/mixxx-buildserver-windows/install_buildenv.bat
+  - .\install_buildenv.bat
+
+#---------------------------------#
+#       build configuration       #
+#---------------------------------#
+
+# build platform, i.e. x86, x64, Any CPU. This setting is optional.
+platform: Any CPU
+
+# scripts to run before build
+before_build:
+  - cd C:\projects\mixxx
+
+# scripts to run *after* solution is built and *before* automatic packaging occurs (web apps, NuGet packages, Azure Cloud Services)
+#before_package:
+
+# scripts to run after build
+#after_build:
+
+# to run your custom scripts instead of automatic MSBuild
+build_script:
+  - C:\mixxx-buildserver\build_mixxx.bat x64 release
+
+# to disable automatic builds
+#build: off
+
+#---------------------------------#
+#       tests configuration       #
+#---------------------------------#
+
+#test:
+#  assemblies:
+#    - asm1.dll
+#    - asm2.dll
+
+#  categories:
+#    - UI
+#    - E2E
+
+# to run tests from different categories as separate jobs in parallel
+#test:
+#  categories:
+#    - A            # A category common for all jobs
+#    - [UI]         # 1st job
+#    - [DAL, BL]    # 2nd job
+
+# scripts to run before tests
+#before_test:
+#  - echo script1
+#  - ps: Write-Host "script1"
+
+# scripts to run after tests
+#after_test:
+
+# to run your custom scripts instead of automatic tests
+test_script:
+  - echo *** Testing
+  # Calling mixxx-test under bash to have standard output
+  - bash -c dist64/mixxx-test.exe
+
+# to disable automatic tests
+#test: off
+
+#---------------------------------#
+#      artifacts configuration    #
+#---------------------------------#
+
+artifacts:
+
+  # pushing a single file
+#  - path: test.zip
+
+  # pushing a single file with environment variable in path and "Deployment name" specified
+#  - path: MyProject\bin\$(configuration)
+#    name: myapp
+
+  # pushing entire folder as a zip archive
+#  - path: logs
+
+  # pushing all *.exe and *.msi files in build directory
+  - path: '*.exe'
+  - path: '*.msi'
+
+#---------------------------------#
+#        global handlers          #
+#---------------------------------#
+
+# on successful build
+on_success:
+  - echo "*** SUCCESS ***"
+
+# on build failure
+on_failure:
+  - echo "*** FAILURE ***"
+
+# after build failure or success
+on_finish:
+  # Uncomment the following line if you don't want the build VM to be destroyed
+  # and be able to RDP on it until a special “lock” file on VM desktop is deleted
+  # The RDP session is limited by overall build time (60 min).
+#  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+  - echo "*** DONE ***"
