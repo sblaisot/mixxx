@@ -226,7 +226,7 @@ artifacts:
   # pushing entire folder as a zip archive
 #  - path: logs
 
-  # pushing all *.nupkg files in build directory recursively
+  # pushing all *.exe and *.msi files in build directory
   - path: '*.exe'
   - path: '*.msi'
 
