@@ -140,11 +140,11 @@ cache:
 install:
   - cd %TEMP%
   - echo *** Downloading and installing scons
-  - curl -fsS -o scons-2.5.1.zip https://www.blaisot.org/mixxx-buildserver-windows/scons-2.5.1.zip
+  - curl -fsS -o scons-2.5.1.zip http://prdownloads.sourceforge.net/scons/scons-2.5.1.zip
   - 7z x scons-2.5.1.zip
   - cd scons-2.5.1
   - python setup.py install
-  - echo *** Downloading precompiled build environment
+  - echo *** Downloading precompiled build environment if not in build-cache
   - curl -fsS -o install_buildenv.bat https://www.blaisot.org/mixxx-buildserver-windows/install_buildenv.bat
   - .\install_buildenv.bat
 
@@ -203,6 +203,7 @@ build_script:
 # to run your custom scripts instead of automatic tests
 test_script:
   - echo *** Testing
+  # Calling mixxx-test under bash to have standard output
   - bash -c dist64/mixxx-test.exe
 
 # to disable automatic tests
